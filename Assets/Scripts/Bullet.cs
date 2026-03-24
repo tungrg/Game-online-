@@ -8,27 +8,21 @@ public class Bullet : NetworkBehaviour
     float lifeTime = 3f;
     public GameObject effect;
     public float speed = 10f;
-    [Networked] public Vector3 NetPos { get; set; }
+    Vector3 prevPos;
 
-    public override void Spawned()
-    {
-        if (Object.HasStateAuthority)
-        {
-            NetPos = transform.position;
-        }
-    }
+public override void Spawned()
+{
+    prevPos = transform.position;
+}
+
     public override void FixedUpdateNetwork()
-    {       
+    {
+        // 🔥 CHỈ host điều khiển
         if (Object.HasStateAuthority)
         {
-            NetPos += transform.forward * speed * Runner.DeltaTime;
-        }
-        transform.position = NetPos;
+            transform.position += transform.forward * speed * Runner.DeltaTime;
 
-        if (Object.HasStateAuthority)
-        {
             lifeTime -= Runner.DeltaTime;
-
             if (lifeTime <= 0f)
             {
                 Runner.Despawn(Object);
@@ -42,18 +36,23 @@ public class Bullet : NetworkBehaviour
 
         var hit = other.GetComponent<Health>();
 
+        if (other.CompareTag("Wall"))
+        {
+            Runner.Spawn(effect, transform.position, Quaternion.identity);
+            Runner.Despawn(Object);
+            return;
+        }
+
         if (hit != null)
         {
-            // 🔥 FIX QUAN TRỌNG
-            if (!hit.Object || !hit.Object.IsValid)
-                return;
             if (hit.Team == Team)
                 return; // Ignore teammates
 
+
             hit.TakeDamage(10);
 
+            Runner.Spawn(effect, transform.position, Quaternion.identity);
             Runner.Despawn(Object);
-            Instantiate(effect, transform.position, Quaternion.identity);
         }
     }
 }

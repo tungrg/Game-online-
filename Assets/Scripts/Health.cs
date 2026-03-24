@@ -2,42 +2,44 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using ExitGames.Client.Photon.StructWrapping;
 
 public class Health : NetworkBehaviour
 {
     public GameObject deathEffect;
 
-    // ✅ Use explicit backing fields for networked properties
-    private int _hp;
-    [Networked, OnChangedRender(nameof(OnHealthChanged))]
-    public int HP { get => _hp; set => _hp = value; }
+    [Networked] public int HP { get; set; }
+    [Networked] public int Mana { get; set; }
 
-    private int _mana;
-    [Networked, OnChangedRender(nameof(OnManaChanged))]
-    public int Mana { get => _mana; set => _mana = value; }
+    [SerializeField] private int startHP = 100;
+    [SerializeField] private int startMana = 30;
 
-    private int _team;
-    [Networked]
-    public int Team { get => _team; set => _team = value; }
+    public int Team;
 
     public Slider healthSlider;
     public Slider manaSlider;
 
     private PlayerInput playerInput;
-    private bool canShoot = true;
 
-    // ✅ Set networked values only in the Spawned method
     public override void Spawned()
     {
-        // Only set values if this is the input authority (the player who owns this object)
-        if (Object.HasInputAuthority)
+        if (Object.HasStateAuthority)
         {
-            HP = 100;
-            Mana = 30;
+            HP = startHP;
+            Mana = startMana;
         }
 
-        // Initialize UI
+        playerInput = GetComponent<PlayerInput>();
+        UpdateUI();
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        // 🔥 luôn update UI theo giá trị local (fake sync)
+        UpdateUI();
+    }
+
+    void UpdateUI()
+    {
         if (healthSlider != null)
         {
             healthSlider.maxValue = 100;
@@ -49,43 +51,29 @@ public class Health : NetworkBehaviour
             manaSlider.maxValue = 30;
             manaSlider.value = Mana;
         }
-
-        playerInput = GetComponent<PlayerInput>();
     }
 
-    public override void FixedUpdateNetwork()
+    // 🔥 DAMAGE CHỈ HOST XỬ LÝ
+    public void TakeDamage(int damage)
     {
         if (!Object.HasStateAuthority) return;
 
-        // ⚠️ Demo test only, use NetworkInput for production
-        if (playerInput.actions["Attack"].triggered)
-        {
-            HP -= 10;
-        }
-    }
-
-    void OnHealthChanged()
-    {
-        if (healthSlider != null)
-            healthSlider.value = HP;
-    }
-
-    void OnManaChanged()
-    {
-        if (manaSlider != null)
-            manaSlider.value = Mana;
-    }
-
-    public void TakeDamage(int damage)
-    {
-        if (!Object.HasStateAuthority) return; // Ensure only the state authority modifies HP
-
         HP -= damage;
 
-        if (HP <= 0)
+        if (HP <= 0)    
         {
-            // Handle death logic here
+            HP = 0;
+
             Debug.Log("Player is dead");
+
+            // 🔥 spawn effect = tất cả client đều thấy
+            if (deathEffect != null)
+            {
+                Runner.Spawn(deathEffect, transform.position, Quaternion.identity);
+            }
+
+            // 🔥 xóa player
+            Runner.Despawn(Object);
         }
     }
 }

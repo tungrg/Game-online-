@@ -6,17 +6,19 @@ public class TankShooting : NetworkBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     public float bulletSpeed;
+    int Team = 0;
 
     float firecooldown = 1.5f;
     float timer = 0f;
 
     public override void FixedUpdateNetwork()
     {
-        if (!Object.HasInputAuthority) return;
+        if (!GetInput<PlayerInputData>(out var input)) return;
+        if (!Object.HasStateAuthority) return;
 
         timer -= Runner.DeltaTime;
 
-        if (Input.GetMouseButton(0) && timer <= 0f)
+        if (input.isShooting && timer <= 0f)
         {
             Shoot();
             timer = firecooldown;
@@ -25,11 +27,17 @@ public class TankShooting : NetworkBehaviour
 
     void Shoot()
     {
+        if (!Object.HasStateAuthority) return;
+
         var bullet = Runner.Spawn(
             bulletPrefab,
             firePoint.position,
             firePoint.rotation,
-            Object.InputAuthority
+            null, // ✅ KHÔNG có input authority
+            (runner, obj) =>
+            {
+                obj.GetComponent<Bullet>().Team = Team;
+            }
         );
     }
 }

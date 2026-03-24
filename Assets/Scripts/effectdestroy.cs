@@ -1,17 +1,25 @@
 ﻿using UnityEngine;
+using Fusion;
 
-public class effectdestroy : MonoBehaviour
+public class effectdestroy : NetworkBehaviour
 {
-    public float lifetime; // Thời gian tồn tại của hiệu ứng
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float life;
+    private float timer;
+
+    public override void Spawned()
     {
-        Destroy(gameObject, lifetime); // Hủy đối tượng sau một khoảng thời gian nhất định để tránh rác
+        timer = life;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void FixedUpdateNetwork()
     {
-        
+        if (!Object.HasStateAuthority) return;
+
+        timer -= Runner.DeltaTime;
+
+        if (timer <= 0f)
+        {
+            Runner.Despawn(Object);
+        }
     }
 }

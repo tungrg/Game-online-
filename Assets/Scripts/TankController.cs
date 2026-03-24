@@ -15,6 +15,7 @@ public class TankController : NetworkBehaviour
 
     public float moveSpeed = 10f;
     public float rotateSpeed = 10f;
+    public int Team { get; set; }
 
     void Awake()
     {
@@ -24,12 +25,18 @@ public class TankController : NetworkBehaviour
 
     public override void Spawned()
     {
-        if (!Object.HasInputAuthority) return;
+        if (Object.HasStateAuthority)
+        {
+            Team = 0;
+        }
 
-        CinemachineCamera cam = FindFirstObjectByType<CinemachineCamera>();
+        if (Object.HasInputAuthority)
+        {
+            CinemachineCamera cam = FindFirstObjectByType<CinemachineCamera>();
 
-        cam.Follow = transform;
-        cam.LookAt = turret;
+            cam.Follow = transform;
+            cam.LookAt = turret;
+        }
     }
     public override void FixedUpdateNetwork()
     {

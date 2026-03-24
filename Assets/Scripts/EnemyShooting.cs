@@ -12,17 +12,13 @@ public class EnemyShooting : NetworkBehaviour
     public float fireRate = 1f;
 
     float fireCooldown;
-    public override void Spawned()
+    void Start()
     {
-        if (Object.HasStateAuthority)
-        {
-            Team = 1; // enemy team
-        }
+        Team = 1;
     }
     public override void FixedUpdateNetwork()
     {
-        // ❗ chỉ Host chạy AI
-        if (!HasStateAuthority) return;
+        if (!Object.HasStateAuthority) return;
 
         fireCooldown -= Runner.DeltaTime;
 
@@ -84,6 +80,7 @@ public class EnemyShooting : NetworkBehaviour
 
     void Shoot()
     {
+        if (!Object.HasStateAuthority) return;
         int shooterTeam = Team;
 
         // 🔥 LEFT
