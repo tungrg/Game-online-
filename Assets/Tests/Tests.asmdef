@@ -1,18 +1,29 @@
 {
+<<<<<<< HEAD
     "name": "Test",
+=======
+    "name": "Tests",
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Unity.InputSystem",
+<<<<<<< HEAD
         "Fusion.Unity",
         "Fusion.Runtime",
+=======
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
         "Game"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
+<<<<<<< HEAD
     "overrideReferences": true,
+=======
+    "overrideReferences": false,
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
     "precompiledReferences": [
         "nunit.framework.dll"
     ],

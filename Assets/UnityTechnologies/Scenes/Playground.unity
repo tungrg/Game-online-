@@ -1129,6 +1129,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f7f3dde7ae722a4aafffe20691ad702, type: 3}
+<<<<<<< HEAD
 --- !u!1001 &2040358262859697326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1234,6 +1235,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f05b06b586107c4b9e5ce333ad39155, type: 3}
+=======
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 --- !u!1 &2114283753834967212
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,7 +1300,11 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2114283754330233424}
   m_Enabled: 1
+<<<<<<< HEAD
   serializedVersion: 13
+=======
+  serializedVersion: 12
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   m_Type: 1
   m_Color: {r: 0.972549, g: 0.9607843, b: 0.8784314, a: 1}
   m_Intensity: 1
@@ -1349,7 +1356,11 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
+<<<<<<< HEAD
   m_ShapeRadius: 0
+=======
+  m_ShadowRadius: 0
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -1591,4 +1602,7 @@ SceneRoots:
   - {fileID: 746329221}
   - {fileID: 832348331}
   - {fileID: 153377915}
+<<<<<<< HEAD
   - {fileID: 2040358262859697326}
+=======
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4

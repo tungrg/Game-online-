@@ -41,6 +41,10 @@ PlayerSettings:
     height: 1
   m_SplashScreenLogos: []
   m_VirtualRealitySplashScreen: {fileID: 0}
+<<<<<<< HEAD
+=======
+  m_HolographicTrackingLossScreen: {fileID: 0}
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   defaultScreenWidth: 480
   defaultScreenHeight: 320
   defaultScreenWidthWeb: 960
@@ -113,7 +117,10 @@ PlayerSettings:
   xboxEnableGuest: 0
   xboxEnablePIXSampling: 0
   metalFramebufferOnly: 0
+<<<<<<< HEAD
   metalUseMetalDisplayLink: 0
+=======
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   xboxOneResolution: 0
   xboxOneSResolution: 0
   xboxOneXResolution: 3
@@ -148,10 +155,18 @@ PlayerSettings:
   - {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
+<<<<<<< HEAD
+=======
+  m_HolographicPauseOnTrackingLoss: 1
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   xboxOneDisableKinectGpuReservation: 1
   xboxOneEnable7thCore: 1
   vrSettings:
     enable360StereoCapture: 0
+<<<<<<< HEAD
+=======
+  isWsaHolographicRemotingEnabled: 0
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   enableFrameTimingStats: 0
   enableOpenGLProfilerGPURecorders: 1
   allowHDRDisplaySupport: 0
@@ -828,7 +843,11 @@ PlayerSettings:
   webWasm2023: 0
   webEnableSubmoduleStrippingCompatibility: 0
   scriptingDefineSymbols:
+<<<<<<< HEAD
     Standalone: FUSION_LOGLEVEL_INFO;FUSION_WEAVER;FUSION2;FUSION_2;FUSION_2_0;FUSION_2_0_11;FUSION_2_OR_NEWER;FUSION_2_0_OR_NEWER;UNITY_INCLUDE_TESTS
+=======
+    Standalone: FUSION_LOGLEVEL_INFO;FUSION_WEAVER;FUSION2;FUSION_2;FUSION_2_0;FUSION_2_0_11;FUSION_2_OR_NEWER;FUSION_2_0_OR_NEWER
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

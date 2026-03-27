@@ -200,7 +200,10 @@ RectTransform:
   m_Children:
   - {fileID: 7409180772307382887}
   - {fileID: 370742252015177851}
+<<<<<<< HEAD
   - {fileID: 8254067182358908309}
+=======
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   m_Father: {fileID: 3914511135470657923}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -226,8 +229,12 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+<<<<<<< HEAD
   m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
+=======
+  m_AdditionalShaderChannelsFlag: 0
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -254,7 +261,11 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+<<<<<<< HEAD
   m_PresetInfoIsWorld: 0
+=======
+  m_PresetInfoIsWorld: 1
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 --- !u!114 &8954072105269033886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,6 +660,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+<<<<<<< HEAD
 --- !u!1 &3629065396188130071
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,6 +798,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+=======
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 --- !u!1 &4191619250546630941
 GameObject:
   m_ObjectHideFlags: 0
@@ -1084,8 +1098,11 @@ MonoBehaviour:
   lowBody: {fileID: 7229569988814442274}
   turret: {fileID: 8663876187951145761}
   cam: {fileID: 0}
+<<<<<<< HEAD
   _PlayerName: 
   nameText: {fileID: 3829890680765462684}
+=======
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   moveSpeed: 7
   rotateSpeed: 4
 --- !u!114 &6967933285322432832
@@ -1195,6 +1212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   deathEffect: {fileID: 3721386717818485602, guid: f56c09cb026724740b1cc7b7c27baaeb, type: 3}
+<<<<<<< HEAD
   _HP: 100
   _Mana: 0
   startHP: 100
@@ -1202,6 +1220,13 @@ MonoBehaviour:
   Team: 0
   healthSlider: {fileID: 5963439895048865713}
   manaSlider: {fileID: 8379649796927751440}
+=======
+  healthSlider: {fileID: 5963439895048865713}
+  manaSlider: {fileID: 8379649796927751440}
+  _HP: 100
+  _Mana: 0
+  _Team: 0
+>>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 --- !u!1 &5052742921814898046
 GameObject:
   m_ObjectHideFlags: 0
