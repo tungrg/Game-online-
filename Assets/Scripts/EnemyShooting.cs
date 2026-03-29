@@ -9,11 +9,7 @@ public class EnemyShooting : NetworkBehaviour
     public Transform firePointRight;
     public float bulletSpeed = 10f;
     public float attackRange = 10f;
-<<<<<<< HEAD
     public float fireRate = 2f;
-=======
-    public float fireRate = 1f;
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 
     float fireCooldown;
     void Start()

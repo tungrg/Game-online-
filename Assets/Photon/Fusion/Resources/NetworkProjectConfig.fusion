@@ -13,11 +13,7 @@
     "NetworkIdIsObjectName": false,
     "HideNetworkObjectInactivityGuard": false,
     "AllowClientServerModesInWebGL": false,
-<<<<<<< HEAD
     "ClientsRecordFrameAndPacketTimingTraces": true,
-=======
-    "ClientsRecordFrameAndPacketTimingTraces": false,
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
     "Simulation": {
         "InputDataWordCount": 0,
         "ReplicationFeatures": 1,
@@ -70,14 +66,10 @@
         "Fusion.Unity",
         "Assembly-CSharp",
         "Assembly-CSharp-firstpass",
-<<<<<<< HEAD
-        "Game",
-        "Test"
-=======
         "Fusion.Addons.Physics",
         "Fusion.Addons.FSM",
-        "Game"
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
+        "Game",
+        "Test"
     ],
     "UseSerializableDictionary": true,
     "NullChecksForNetworkedProperties": true,

@@ -2,20 +2,17 @@
     "name": "Game",
     "rootNamespace": "",
     "references": [
-<<<<<<< HEAD
         "Unity.Cinemachine",
         "Unity.InputSystem",
         "Unity.TextMeshPro",
         "Fusion.Unity",
         "Unity.Fusion.CodeGen",
         "Fusion.Unity.Editor"
-=======
         "Unity.InputSystem",
         "Unity.Cinemachine",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner",
         "Fusion.Unity"
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

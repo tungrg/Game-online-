@@ -54,7 +54,6 @@ public class Health : NetworkBehaviour
     }
 
     // 🔥 DAMAGE CHỈ HOST XỬ LÝ
-<<<<<<< HEAD
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_TakeDamage(int damage)
     {
@@ -62,33 +61,16 @@ public class Health : NetworkBehaviour
         HP -= damage;
 
         if (HP <= 0)
-=======
-    public void TakeDamage(int damage)
-    {
-        if (!Object.HasStateAuthority) return;
-
-        HP -= damage;
-
-        if (HP <= 0)    
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
         {
             HP = 0;
 
             Debug.Log("Player is dead");
 
-<<<<<<< HEAD
-=======
-            // 🔥 spawn effect = tất cả client đều thấy
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
             if (deathEffect != null)
             {
                 Runner.Spawn(deathEffect, transform.position, Quaternion.identity);
             }
 
-<<<<<<< HEAD
-=======
-            // 🔥 xóa player
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
             Runner.Despawn(Object);
         }
     }

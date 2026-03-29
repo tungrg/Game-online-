@@ -1,8 +1,5 @@
 ﻿using Fusion;
-<<<<<<< HEAD
 using TMPro;
-=======
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,14 +12,9 @@ public class TankController : NetworkBehaviour
     public Transform lowBody;
     public Transform turret;
     public CinemachineCamera cam;
-<<<<<<< HEAD
     [Networked] public string PlayerName { get; set; }
 
     public TMP_Text nameText;
-
-=======
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
-
 
     public float moveSpeed = 10f;
     public float rotateSpeed = 10f;
@@ -33,8 +25,7 @@ public class TankController : NetworkBehaviour
         tankController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
     }
-<<<<<<< HEAD
- 
+
     public void SetName(string name)
     {
         if (Object.HasInputAuthority)
@@ -50,24 +41,21 @@ public class TankController : NetworkBehaviour
             nameText.text = PlayerName;
         }
     }
+
     public override void Spawned()
     {
         if (nameText == null)
         {
             nameText = GetComponentInChildren<TMP_Text>();
-=======
+        }
 
-    public override void Spawned()
-    {
         if (Object.HasStateAuthority)
         {
             Team = 0;
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
         }
 
         if (Object.HasInputAuthority)
         {
-<<<<<<< HEAD
             cam = FindAnyObjectByType<CinemachineCamera>();
 
             if (cam != null)
@@ -75,14 +63,9 @@ public class TankController : NetworkBehaviour
                 cam.Follow = transform;
                 cam.LookAt = turret;
             }
-=======
-            CinemachineCamera cam = FindFirstObjectByType<CinemachineCamera>();
-
-            cam.Follow = transform;
-            cam.LookAt = turret;
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
         }
     }
+
     public override void FixedUpdateNetwork()
     {
         if (!Object.HasInputAuthority) return;
@@ -124,12 +107,10 @@ public class TankController : NetworkBehaviour
             );
         }
     }
-<<<<<<< HEAD
+
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void RPC_SetName(string name)
     {
         PlayerName = name;
     }
-=======
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 }

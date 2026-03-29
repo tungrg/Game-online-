@@ -32,11 +32,7 @@ public override void Spawned()
 
     void OnTriggerEnter(Collider other)
     {
-<<<<<<< HEAD
         if (!Object.HasStateAuthority) return;
-=======
-        if (!Object.HasStateAuthority) return; // Ensure only the state authority handles this logic
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 
         var hit = other.GetComponent<Health>();
 
@@ -50,16 +46,9 @@ public override void Spawned()
         if (hit != null)
         {
             if (hit.Team == Team)
-<<<<<<< HEAD
                 return;
 
             hit.RPC_TakeDamage(10);
-=======
-                return; // Ignore teammates
-
-
-            hit.TakeDamage(10);
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 
             Runner.Spawn(effect, transform.position, Quaternion.identity);
             Runner.Despawn(Object);

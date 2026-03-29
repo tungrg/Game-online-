@@ -119,7 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
-<<<<<<< HEAD
 --- !u!1 &53966283
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,8 +190,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 --- !u!1001 &249660048
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -282,15 +279,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9f2ef4930c7eaf4fa24cbcb854fe0c6, type: 3}
-<<<<<<< HEAD
-=======
---- !u!1 &277746532
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
   m_Component:
   - component: {fileID: 277746535}
   - component: {fileID: 277746534}
@@ -438,7 +426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908dd70299ef34041bcd6c3865413752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::RunnerSetup
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,11 +640,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
-<<<<<<< HEAD
   serializedVersion: 13
-=======
-  serializedVersion: 12
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
@@ -703,21 +686,13 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-<<<<<<< HEAD
   m_ColorTemperature: 5086
-=======
-  m_ColorTemperature: 5000
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-<<<<<<< HEAD
   m_ShapeRadius: 0
-=======
-  m_ShadowRadius: 0
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -974,8 +949,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
-=======
 --- !u!1 &1230047461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,7 +1020,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 --- !u!1001 &1261505349
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1221,11 +1193,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game::Health
   deathEffect: {fileID: 0}
-<<<<<<< HEAD
   _HP: 0
   _Mana: 0
-=======
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   startHP: 100000
   startMana: 30
   Team: 0
@@ -1360,11 +1329,8 @@ MonoBehaviour:
   lowBody: {fileID: 0}
   turret: {fileID: 0}
   cam: {fileID: 0}
-<<<<<<< HEAD
   _PlayerName: 
   nameText: {fileID: 0}
-=======
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   moveSpeed: 10
   rotateSpeed: 10
 --- !u!114 &1617998920
@@ -1411,7 +1377,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
-<<<<<<< HEAD
 --- !u!1 &1699334605
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,7 +1671,96 @@ Transform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2074359829
-=======
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955703434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87a15ad5d6e9c5f4989d2596936d2022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  deathEffect: {fileID: 0}
+  startHP: 100
+  startMana: 30
+  Team: 0
+  healthSlider: {fileID: 0}
+  manaSlider: {fileID: 0}
+--- !u!114 &1955703439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699334605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7707fa66633afe940b31469394189fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkInputHandler
+--- !u!1001 &195622016862630760
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2468950698596939395, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: RunnerPrefab
+      value: 
+      objectReference: {fileID: 2074359824}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853372391498153617, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8211406142208833018, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
+      propertyPath: m_Name
+      value: Prototype Network Start
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
 --- !u!1 &1955703434
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,13 +1876,11 @@ Transform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &1955703439
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
   m_GameObject: {fileID: 1699334605}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1896,39 +1948,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89e21d3c871285e4e8d5b1d3a179690c, type: 3}
-=======
-  m_GameObject: {fileID: 1955703434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87a15ad5d6e9c5f4989d2596936d2022, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Health
-  deathEffect: {fileID: 0}
-  startHP: 100
-  startMana: 30
-  Team: 0
-  healthSlider: {fileID: 0}
-  manaSlider: {fileID: 0}
---- !u!114 &1955703440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1955703434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
-  SortKey: 247270446
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 1955703439}
-  ForceRemoteRenderTimeframe: 0
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1937,19 +1956,10 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 583598241}
-<<<<<<< HEAD
   - {fileID: 195622016862630760}
   - {fileID: 1906318919}
-=======
-  - {fileID: 1230047464}
-  - {fileID: 277746535}
-  - {fileID: 1955703438}
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
   - {fileID: 1590963023}
   - {fileID: 249660048}
   - {fileID: 1261505349}
   - {fileID: 1617998918}
-<<<<<<< HEAD
   - {fileID: 1964602097}
-=======
->>>>>>> e3ee0d1448c9db405dd1417bb540b124d85142a4
