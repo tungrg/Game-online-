@@ -84,8 +84,7 @@ namespace StarterAssets
         // player
         private float _speed;
 
-        [Networked, OnChangedRender(nameof(OnAimChange))]
-        private float _animationBlend { get; set; }
+        private float _animationBlend;
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
         private float _verticalVelocity;
@@ -99,16 +98,10 @@ namespace StarterAssets
         private int _animIDSpeed { get; set; }
         private int _animIDGrounded;
         private int _animIDJump;
-
-        [Networked, OnChangedRender(nameof(OnIDJumpChanged))]
-        private int _animIDJumpParam { get; set; }
         private int _animIDFreeFall;
-        [Networked, OnChangedRender(nameof(OnIDFreeFallChanged))]
-        private int _animIDFreeFallParam { get; set; }
         private int _animIDMotionSpeed;
 
-        [Networked, OnChangedRender(nameof(OnInputMagnitudeChanged))]
-        float inputMagnitude { get; set; }
+        private float _inputMagnitude;
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
@@ -121,6 +114,8 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
+        private bool _isInitialized;
+        private bool _missingComponentLogged;
 
         private bool IsCurrentDeviceMouse
         {
@@ -142,35 +137,82 @@ namespace StarterAssets
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
+
+            TryInitialize();
+        }
+
+        public override void Spawned()
+        {
+            TryInitialize();
         }
 
         private void Start()
         {
-            _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+            TryInitialize();
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (Object == null || !Object.IsValid)
+            {
+                return;
+            }
+
+            if (!TryInitialize())
+            {
+                return;
+            }
+
+            JumpAndGravity();
+            GroundedCheck();
+            Move();
+        }
+
+        private bool TryInitialize()
+        {
+            if (_isInitialized)
+            {
+                return true;
+            }
+
+            if (_mainCamera == null)
+            {
+                _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            }
+
+            if (CinemachineCameraTarget != null)
+            {
+                _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
+            }
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM 
             _playerInput = GetComponent<PlayerInput>();
 #else
-			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
+			Debug.LogError("Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
+
+            if (_controller == null || _input == null)
+            {
+                if (!_missingComponentLogged)
+                {
+                    Debug.LogError("Missing required components for ThirdPersonController. Ensure CharacterController and StarterAssetsInputs are on the same GameObject.", this);
+                    _missingComponentLogged = true;
+                }
+
+                return false;
+            }
 
             AssignAnimationIDs();
 
-            // reset our timeouts on start
+            // reset our timeouts on first initialization
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
-        }
 
-        public override void FixedUpdateNetwork()
-        {
-            _hasAnimator = TryGetComponent(out _animator);
-
-            JumpAndGravity();
-            GroundedCheck();
-            Move();
+            _isInitialized = true;
+            return true;
         }
 
         private void LateUpdate()
@@ -211,6 +253,11 @@ namespace StarterAssets
 
         private void CameraRotation()
         {
+            if (CinemachineCameraTarget == null)
+            {
+                return;
+            }
+
             //// if there is an input and camera position is not fixed
             //if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             //{
@@ -232,6 +279,8 @@ namespace StarterAssets
 
         private void Move()
         {
+            _inputMagnitude = _input.move.magnitude;
+
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
@@ -253,7 +302,7 @@ namespace StarterAssets
             {
                 // creates curved result rather than a linear one giving a more organic speed change
                 // note T in Lerp is clamped, so we don't need to clamp our speed
-                _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
+                _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * _inputMagnitude,
                     Time.deltaTime * SpeedChangeRate);
 
                 // round speed to 3 decimal places
@@ -274,8 +323,9 @@ namespace StarterAssets
             // if there is a move input rotate player when the player is moving
             if (_input.move != Vector2.zero)
             {
+                float cameraYaw = _mainCamera != null ? _mainCamera.transform.eulerAngles.y : transform.eulerAngles.y;
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
+                                  cameraYaw;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 
@@ -301,8 +351,7 @@ namespace StarterAssets
         {
             if (_hasAnimator)
             {
-                inputMagnitude = _input.move.magnitude;
-                _animator.SetFloat(_animIDSpeed, inputMagnitude);
+                _animator.SetFloat(_animIDSpeed, _inputMagnitude);
             }
         }
 
@@ -310,21 +359,24 @@ namespace StarterAssets
         {
             if (_hasAnimator)
             {
-                _animator.SetLayerWeight(1, _input.sprint ? 1 : 0);
+                if (_animator.layerCount > 1)
+                {
+                    _animator.SetLayerWeight(1, _input.sprint ? 1 : 0);
+                }
             }
         }
         public void OnIDJumpChanged()
         {
             if (_hasAnimator)
             {
-                _animator.SetInteger(_animIDJumpParam, (int)_animationBlend);
+                _animator.SetBool(_animIDJump, false);
             }
         }
         public void OnIDFreeFallChanged()
         {
             if (_hasAnimator)
             {
-                _animator.SetInteger(_animIDFreeFallParam, (int)_animationBlend);
+                _animator.SetBool(_animIDFreeFall, false);
             }
         }
 

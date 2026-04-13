@@ -8,7 +8,7 @@ public class NameInputUI : MonoBehaviour
 
     public void OnClickPlay()
     {
-        PlayerData.PlayerName = inputField.text;
+        PlayerData.PlayerName = inputField != null && inputField.text != null ? inputField.text.Trim() : string.Empty;
         SceneManager.LoadScene("SampleScene");
     }
 }

@@ -4,12 +4,13 @@ using Fusion;
 public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
 {
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private float spawnYOffset = 1.0f;
 
     public void PlayerJoined(PlayerRef player)
     {
         if (Runner == null || playerPrefab == null)
         {
-            return;
+            return; 
         }
 
         bool shouldSpawn = false;
@@ -30,12 +31,22 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
             return;
         }
 
-        var obj = Runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
+        Vector3 spawnPosition = GetSpawnPosition();
+        var obj = Runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
+        if (obj != null)
+        {
+            Runner.SetPlayerObject(player, obj);
+        }
 
         var controller = obj.GetComponent<TankController>();
         if (controller != null && player == Runner.LocalPlayer)
         {
-            controller.PlayerName = PlayerData.PlayerName;
+            // controller.PlayerName = PlayerData.PlayerName;
         }
+    }
+
+    private Vector3 GetSpawnPosition()
+    {
+        return transform.position + Vector3.up * spawnYOffset;
     }
 }

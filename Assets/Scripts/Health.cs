@@ -1,47 +1,86 @@
 ﻿using Fusion;
+using Fusion.Sockets;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class Health : NetworkBehaviour
 {
+    private static readonly Dictionary<string, Health> HealthByNetworkId = new Dictionary<string, Health>();
+    
     public GameObject deathEffect;
+    [SerializeField] private bool spawnNetworkEffectsInMultiplayer = false;
 
-    // Regular fields for health tracking
+    private static readonly ReliableKey DamageRequestKey = ReliableKey.FromInts(88, 2, 0, 0);
+    private static readonly ReliableKey VitalsSyncKey = ReliableKey.FromInts(88, 2, 0, 1);
+
+    [Serializable]
+    private class DamageRequestPacket
+    {
+        public string networkId;
+        public int damage;
+        public string sourceNetworkId;
+    }
+
+    [Serializable]
+    private class VitalsSyncPacket
+    {
+        public string networkId;
+        public int hp;
+        public int mana;
+    }
+
     public int HP = 100;
     public int Mana = 30;
 
     [SerializeField] private int startHP = 100;
-    [SerializeField] private int startMana = 30;
+    
 
-    public int Team;
-
-    public Slider healthSlider;
-    public Slider manaSlider;
+    public int Team = -1;
 
     private PlayerInput playerInput;
+    private string _networkId;
+    private string _lastDamageSourceNetworkId;
+
+    public string NetworkId => _networkId;
 
     public override void Spawned()
     {
+        if (Object != null)
+        {
+            _networkId = Object.Id.ToString();
+            if (!string.IsNullOrEmpty(_networkId))
+            {
+                HealthByNetworkId[_networkId] = this;
+            }
+        }
+
         if (Object.HasStateAuthority)
         {
             HP = startHP;
-            Mana = startMana;
+            Mana = 30;
+            BroadcastVitalsState();
         }
 
         playerInput = GetComponent<PlayerInput>();
-        UpdateUI();
+    }
+
+    private void OnDestroy()
+    {
+        if (!string.IsNullOrEmpty(_networkId))
+        {
+            HealthByNetworkId.Remove(_networkId);
+        }
     }
 
     public override void FixedUpdateNetwork()
     {
-        // 🔥 Just update UI - don't call RPCs! They cause InvokeRpc errors
-        UpdateUI();
-        
         // 🔥 Host handles death state
         if (Object.HasStateAuthority && HP <= 0)
         {
-            if (deathEffect != null)
+            if (deathEffect != null && (spawnNetworkEffectsInMultiplayer || Runner == null || !Runner.IsRunning))
             {
                 Runner.Spawn(deathEffect, transform.position, Quaternion.identity);
             }
@@ -49,29 +88,201 @@ public class Health : NetworkBehaviour
         }
     }
 
-    void UpdateUI()
+    public void TakeDamage(int damage)
     {
-        if (healthSlider != null)
+        TakeDamage(damage, (string)null);
+    }
+
+    public void TakeDamage(int damage, Health source)
+    {
+        TakeDamage(damage, source != null ? source.NetworkId : null);
+    }
+
+    public void TakeDamage(int damage, string sourceNetworkId)
+    {
+        if (damage <= 0 || Object == null)
         {
-            healthSlider.maxValue = 100;
-            healthSlider.value = HP;
+            return;
         }
 
-        if (manaSlider != null)
+        if (Object.HasStateAuthority)
         {
-            manaSlider.maxValue = 30;
-            manaSlider.value = Mana;
+            ApplyDamage(damage, sourceNetworkId);
+            return;
+        }
+
+        SendDamageRequest(damage, sourceNetworkId);
+    }
+
+    void ApplyDamage(int damage, string sourceNetworkId)
+    {
+        if (!Object.HasStateAuthority)
+        {
+            return;
+        }
+
+        int previousHp = HP;
+
+        if (!string.IsNullOrEmpty(sourceNetworkId))
+        {
+            _lastDamageSourceNetworkId = sourceNetworkId;
+        }
+
+        HP = Mathf.Max(0, HP - damage);
+        BroadcastVitalsState();
+
+        if (previousHp > 0 && HP <= 0)
+        {
+            Leaderboard.ReportEnemyKilled(_lastDamageSourceNetworkId, this);
         }
     }
 
-    // 🔥 Take damage - just modify HP directly
-    public void TakeDamage(int damage)
+    public int GetMaxHP()
     {
-        if (!Object.HasStateAuthority) return;
-        
-        HP -= damage;
-        HP = Mathf.Max(0, HP);
-        
-        Debug.Log($"🔥 HP: {HP}");
+        return Mathf.Max(1, startHP);
+    }
+
+    void BroadcastVitalsState()
+    {
+        if (Runner == null || Object == null || !Object.HasStateAuthority)
+        {
+            return;
+        }
+
+        VitalsSyncPacket packet = new VitalsSyncPacket
+        {
+            networkId = Object.Id.ToString(),
+            hp = HP,
+            mana = Mana
+        };
+
+        SendVitalsPacketToOtherPlayers(Runner, packet);
+    }
+
+    static void SendVitalsPacketToOtherPlayers(NetworkRunner runner, VitalsSyncPacket packet)
+    {
+        if (runner == null || packet == null)
+        {
+            return;
+        }
+
+        string json = JsonUtility.ToJson(packet);
+        byte[] payload = Encoding.UTF8.GetBytes(json);
+
+        foreach (PlayerRef player in runner.ActivePlayers)
+        {
+            if (player == runner.LocalPlayer)
+            {
+                continue;
+            }
+
+            runner.SendReliableDataToPlayer(player, VitalsSyncKey, payload);
+        }
+    }
+
+    static void HandleVitalsSyncPacket(VitalsSyncPacket packet)
+    {
+        if (packet == null || string.IsNullOrEmpty(packet.networkId))
+        {
+            return;
+        }
+
+        Health target = FindHealthById(packet.networkId);
+        if (target == null)
+        {
+            return;
+        }
+
+        target.HP = Mathf.Max(0, packet.hp);
+        target.Mana = Mathf.Max(0, packet.mana);
+    }
+
+    void SendDamageRequest(int damage, string sourceNetworkId)
+    {
+        if (Runner == null || Object == null || damage <= 0)
+        {
+            return;
+        }
+
+        DamageRequestPacket packet = new DamageRequestPacket
+        {
+            networkId = Object.Id.ToString(),
+            damage = damage,
+            sourceNetworkId = sourceNetworkId
+        };
+
+        string json = JsonUtility.ToJson(packet);
+        byte[] payload = Encoding.UTF8.GetBytes(json);
+
+        if (Runner.IsServer)
+        {
+            HandleDamageRequestPacket(packet);
+            return;
+        }
+
+        PlayerRef owner = Object.StateAuthority;
+        if (owner != PlayerRef.None)
+        {
+            Runner.SendReliableDataToPlayer(owner, DamageRequestKey, payload);
+            return;
+        }
+
+        Runner.SendReliableDataToServer(DamageRequestKey, payload);
+    }
+
+    static void HandleDamageRequestPacket(DamageRequestPacket packet)
+    {
+        if (packet == null || string.IsNullOrEmpty(packet.networkId) || packet.damage <= 0)
+        {
+            return;
+        }
+
+        Health target = FindHealthById(packet.networkId);
+        if (target == null || target.Object == null || !target.Object.HasStateAuthority)
+        {
+            return;
+        }
+
+        target.ApplyDamage(packet.damage, packet.sourceNetworkId);
+    }
+
+    static Health FindHealthById(string networkId)
+    {
+        if (string.IsNullOrEmpty(networkId))
+        {
+            return null;
+        }
+
+        HealthByNetworkId.TryGetValue(networkId, out Health health);
+        return health;
+    }
+
+    public static bool TryGetHealthByNetworkId(string networkId, out Health health)
+    {
+        health = FindHealthById(networkId);
+        return health != null;
+    }
+
+    public static void HandleReliableDataReceived(NetworkRunner runner, ReliableKey key, ArraySegment<byte> data)
+    {
+        if (data.Count <= 0)
+        {
+            return;
+        }
+
+        string json = Encoding.UTF8.GetString(data.Array, data.Offset, data.Count);
+
+        if (key == DamageRequestKey)
+        {
+            DamageRequestPacket damagePacket = JsonUtility.FromJson<DamageRequestPacket>(json);
+            HandleDamageRequestPacket(damagePacket);
+            return;
+        }
+
+        if (key == VitalsSyncKey)
+        {
+            VitalsSyncPacket vitalsPacket = JsonUtility.FromJson<VitalsSyncPacket>(json);
+            HandleVitalsSyncPacket(vitalsPacket);
+        }
     }
 }

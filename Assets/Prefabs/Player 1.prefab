@@ -1334,4 +1334,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TankShooting
   bulletPrefab: {fileID: 8955264081924613265, guid: ee10cc97e102d594b91a91726d2df2bc, type: 3}
   firePoint: {fileID: 4157091759378029152}
-  bulletSpeed: 20
+  bulletSpeed: 100

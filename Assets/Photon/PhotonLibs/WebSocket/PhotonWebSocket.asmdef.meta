@@ -5,3 +5,10 @@ AssemblyDefinitionImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 45334
+  packageName: Photon Chat
+  packageVersion: 2.20
+  assetPath: Assets/Photon/PhotonLibs/WebSocket/PhotonWebSocket.asmdef
+  uploadId: 778179

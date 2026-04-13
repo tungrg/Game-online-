@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using Fusion;
+using System.Collections.Generic;
 
 public class EnemyShooting : NetworkBehaviour
 {
     public int Team { get; set; }
     public GameObject bulletPrefab;
-    public Transform firePointLeft;
-    public Transform firePointRight;
-    public float bulletSpeed = 10f;
+    public float bulletSpeed = 8f;
     public float attackRange = 15f;
     public float fireRate = 2f;
     public float searchRange = 20f;
@@ -16,12 +15,28 @@ public class EnemyShooting : NetworkBehaviour
     GameObject cachedTarget = null;
     float targetSearchCooldown = 0.5f;
     float timeSinceLastSearch = 0f;
-    
-    void Start()
+
+    [SerializeField] private Transform[] leftfirePoints;
+    [SerializeField] private Transform[] rightfirePoints;
+
+
+    public override void Spawned()
     {
         Team = 1;
+
+        if (Object != null && Object.HasStateAuthority)
+        {
+            Health health = GetComponent<Health>();
+            if (health != null) health.Team = Team;
+
+            Health parentHealth = GetComponentInParent<Health>();
+            if (parentHealth != null) parentHealth.Team = Team;
+
+            Health childHealth = GetComponentInChildren<Health>();
+            if (childHealth != null) childHealth.Team = Team;
+        }
     }
-    
+
     public override void FixedUpdateNetwork()
     {
         if (!Object.HasStateAuthority) return;
@@ -55,18 +70,33 @@ public class EnemyShooting : NetworkBehaviour
 
     GameObject GetNearestPlayer()
     {
-        // Find all objects with "Player" tag
-        var players = GameObject.FindGameObjectsWithTag("Player");
-
-        if (players.Length == 0) return null;
+        IReadOnlyList<TankController> players = TankController.GetActiveTanks();
+        if (players == null || players.Count == 0)
+        {
+            return null;
+        }
 
         GameObject nearest = null;
         float minDist = float.MaxValue;
 
-        foreach (var p in players)
+        foreach (TankController player in players)
         {
-            if (p == null) continue;
-            
+            if (player == null)
+            {
+                continue;
+            }
+
+            if (player.Object == null || !player.Object.IsValid)
+            {
+                continue;
+            }
+
+            GameObject p = player.gameObject;
+            if (p == null)
+            {
+                continue;
+            }
+
             float dist = Vector3.Distance(transform.position, p.transform.position);
             if (dist < minDist && dist <= searchRange)
             {
@@ -97,34 +127,44 @@ public class EnemyShooting : NetworkBehaviour
     void Shoot()
     {
         if (!Object.HasStateAuthority) return;
+
         int shooterTeam = Team;
+        Health shooterHealth = GetComponentInParent<Health>();
 
         // 🔥 LEFT
-        Runner.Spawn(
-            bulletPrefab,
-            firePointLeft.position,
-            firePointLeft.rotation,
-            null,
-            (runner, obj) =>
-            {
-                var bullet = obj.GetComponent<Bullet>();
-                bullet.Team = shooterTeam;
-                bullet.speed = bulletSpeed;  // 🔥 SET SPEED!
-            }
-        );
+        foreach (var leftfirePoint in leftfirePoints)
+        {
+            if (leftfirePoint == null) continue;
+
+            Runner.Spawn(
+                bulletPrefab,
+                leftfirePoint.position,   // ✅ dùng đúng biến
+                leftfirePoint.rotation,   // ✅ dùng đúng biến
+                null,
+                (runner, obj) =>
+                {
+                    var bullet = obj.GetComponent<Bullet>();
+                    bullet.SetInitialState(shooterTeam, bulletSpeed, shooterHealth);
+                }
+            );
+        }
 
         // 🔥 RIGHT
-        Runner.Spawn(
-            bulletPrefab,
-            firePointRight.position,
-            firePointRight.rotation,
-            null,
-            (runner, obj) =>
-            {
-                var bullet = obj.GetComponent<Bullet>();
-                bullet.Team = shooterTeam;
-                bullet.speed = bulletSpeed;  // 🔥 SET SPEED!
-            }
-        );
+        foreach (var rightfirePoint in rightfirePoints)
+        {
+            if (rightfirePoint == null) continue;
+
+            Runner.Spawn(
+                bulletPrefab,
+                rightfirePoint.position,   // ✅ đúng
+                rightfirePoint.rotation,   // ✅ đúng
+                null,
+                (runner, obj) =>
+                {
+                    var bullet = obj.GetComponent<Bullet>();
+                    bullet.SetInitialState(shooterTeam, bulletSpeed, shooterHealth);
+                }
+            );
+        }
     }
 }
