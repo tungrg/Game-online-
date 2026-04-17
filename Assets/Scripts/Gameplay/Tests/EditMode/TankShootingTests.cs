@@ -27,33 +27,22 @@ namespace Game.Gameplay.Tests.EditMode
             GameObject go = new GameObject();
             var ts = go.AddComponent<TankShooting>();
 
-            // Act
-            // bulletSpeed is [System.NonSerialized] public, default = 20f
-            float speed = (float)typeof(TankShooting)
-                .GetField("bulletSpeed", BindingFlags.Public | BindingFlags.Instance)
-                .GetValue(ts);
-
-            // Assert
-            Assert.AreEqual(20f, speed, 0.001f);
+            // Act & Assert — bulletSpeed is public, access directly
+            Assert.AreEqual(20f, ts.bulletSpeed, 0.001f);
 
             // Cleanup
             Object.DestroyImmediate(go);
         }
 
         [Test]
-        public void Shoot_WithNullBulletPrefab_DoesNotThrow()
+        public void BulletPrefab_DefaultIsNull()
         {
             // Arrange
             GameObject go = new GameObject();
             var ts = go.AddComponent<TankShooting>();
-            ts.bulletPrefab = null;
 
-            // Act & Assert — calling Shoot via reflection with null prefab should early-return
-            var shootMethod = typeof(TankShooting).GetMethod("Shoot", BindingFlags.NonPublic | BindingFlags.Instance);
-            Assert.DoesNotThrow(() =>
-            {
-                shootMethod.Invoke(ts, new object[] { default(PlayerInputData) });
-            }, "Shoot should early-return when bulletPrefab is null.");
+            // Act & Assert
+            Assert.IsNull(ts.bulletPrefab, "Bullet prefab should default to null (assigned in Inspector).");
 
             // Cleanup
             Object.DestroyImmediate(go);

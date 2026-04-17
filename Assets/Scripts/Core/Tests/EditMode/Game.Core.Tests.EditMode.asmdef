@@ -2,9 +2,12 @@
     "name": "Game.Core.Tests.EditMode",
     "rootNamespace": "",
     "references": [
-        "Game.Core",
+        "Game",
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "Fusion.Unity",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [
         "Editor"

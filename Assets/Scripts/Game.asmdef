@@ -1,11 +1,13 @@
 {
-    "name": "Game.Legacy",
+    "name": "Game",
     "rootNamespace": "",
     "references": [
+        "Fusion.Unity",
         "Unity.Cinemachine",
         "Unity.InputSystem",
-        "Fusion.Unity",
-        "Fusion.Runtime"
+        "Unity.TextMeshPro",
+        "PlayFab",
+        "PhotonChat"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
