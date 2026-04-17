@@ -1,4 +1,4 @@
-﻿using Fusion;
+using Fusion;
 using Fusion.Sockets;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -21,6 +21,7 @@ public class TankController : NetworkBehaviour
     private readonly RaycastHit[] _castHits = new RaycastHit[8];
     private readonly Collider[] _overlapHits = new Collider[16];
     private float _lockedY;
+    private float _camSearchCooldown;
 
     public override void Spawned()
     {
@@ -419,15 +420,21 @@ public class TankController : NetworkBehaviour
 
         if (cam == null)
         {
-            cam = GetComponentInChildren<CinemachineCamera>(true);
-        }
+            if (_camSearchCooldown > 0f)
+            {
+                _camSearchCooldown -= Runner.DeltaTime;
+                return;
+            }
 
-        if (cam == null)
-        {
-            cam = FindAnyObjectByType<CinemachineCamera>();
+            cam = GetComponentInChildren<CinemachineCamera>(true);
             if (cam == null)
             {
-                return;
+                cam = FindAnyObjectByType<CinemachineCamera>();
+                if (cam == null)
+                {
+                    _camSearchCooldown = 1f;
+                    return;
+                }
             }
         }
 

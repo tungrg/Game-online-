@@ -126,7 +126,7 @@ public class AfterMatch : MonoBehaviour
         _matchEnded = true;
         _isWin = allEnemiesDead && !allPlayersDead;
 
-        NetworkRunner runner = FindAnyObjectByType<NetworkRunner>();
+        NetworkRunner runner = NetworkRunner.Instances.Count > 0 ? NetworkRunner.Instances[0] : null;
         if (!_clientSubmitFlowStarted)
         {
             _clientSubmitFlowStarted = true;
@@ -372,7 +372,7 @@ public class AfterMatch : MonoBehaviour
             return SanitizeForId(rowKey);
         }
 
-        NetworkRunner runner = FindAnyObjectByType<NetworkRunner>();
+        NetworkRunner runner = NetworkRunner.Instances.Count > 0 ? NetworkRunner.Instances[0] : null;
         if (runner != null && runner.LocalPlayer != PlayerRef.None)
         {
             return $"lp_{runner.LocalPlayer.PlayerId}";

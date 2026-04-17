@@ -1,0 +1,22 @@
+{
+    "name": "Game.Core",
+    "rootNamespace": "",
+    "references": [
+        "PlayFab",
+        "Fusion.Unity",
+        "Fusion.Runtime",
+        "Unity.Cinemachine",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "PhotonChat"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

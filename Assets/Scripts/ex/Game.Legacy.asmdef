@@ -1,17 +1,11 @@
 {
-    "name": "Game",
+    "name": "Game.Legacy",
     "rootNamespace": "",
     "references": [
         "Unity.Cinemachine",
         "Unity.InputSystem",
-        "Unity.TextMeshPro",
-        "PlayFab",
         "Fusion.Unity",
-        "Fusion.Runtime",
-        "Unity.Fusion.CodeGen",
-        "Fusion.Unity.Editor",
-        "UnityEditor.TestRunner",
-        "UnityEngine.TestRunner"
+        "Fusion.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

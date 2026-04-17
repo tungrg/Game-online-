@@ -1,4 +1,4 @@
-﻿using Fusion;
+using Fusion;
 using UnityEngine;
 
 public class TankShooting : NetworkBehaviour
@@ -13,9 +13,11 @@ public class TankShooting : NetworkBehaviour
     float _timer;
     int _team;
     TankController _tankController;
+    Health _health;
     public override void Spawned()
     {
         _tankController = GetComponent<TankController>();
+        _health = GetComponentInParent<Health>();
         CacheMuzzleLocalOffset();
         _team = ResolveShooterTeam();
     }
@@ -87,16 +89,14 @@ public class TankShooting : NetworkBehaviour
 
     int ResolveShooterTeam()
     {
-        Health h = GetComponentInParent<Health>();
-        if (h != null && h.Team >= 0)
+        if (_health != null && _health.Team >= 0)
         {
-            return h.Team;
+            return _health.Team;
         }
 
-        TankController controller = GetComponent<TankController>();
-        if (controller != null)
+        if (_tankController != null)
         {
-            return controller.Team;
+            return _tankController.Team;
         }
 
         return _team;
